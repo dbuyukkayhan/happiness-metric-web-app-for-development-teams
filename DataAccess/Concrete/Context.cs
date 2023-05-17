@@ -12,13 +12,13 @@ namespace DataAccess.Concrete
     {
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseSqlServer("server=dogus; database=HappinessMetricAppDb; integrated security=true;");
+            optionsBuilder.UseSqlServer("server=94.73..17; database=; User ID=; Password=");
         }
 
         public DbSet<User> Users { get; set; }
         public DbSet<Team> Teams { get; set; }
         public DbSet<Sprint> Sprints { get; set; }
         public DbSet<Role> Roles { get; set; }
-        public DbSet<Category> Cagegories { get; set; }
+        public DbSet<Category> Categories { get; set; }
     }
 }
