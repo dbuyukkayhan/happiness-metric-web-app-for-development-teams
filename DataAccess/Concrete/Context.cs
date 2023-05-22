@@ -12,7 +12,7 @@ namespace DataAccess.Concrete
     {
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseSqlServer("server=94.73.144.17; database=u0778308_dogus; User ID=u0778308_dogus; Password=Ej:N3Wzo6a3X=-5.;");
+            optionsBuilder.UseSqlServer("server=94.73.144.17; database=u0778308_dogus; User ID=u0778308_dogus; Password=;");
         }
 
         public DbSet<User> Users { get; set; }
