@@ -7,18 +7,23 @@ using System.Threading.Tasks;
 
 namespace Entities.Concrete
 {
-    public class Sprint
+    public class Post
     {
         [Key]
-        public int SprintId { get; set; }
-        public string SprintName { get; set; }
-        public DateTime SprintStart { get; set; }
-        public DateTime SprintEnd { get; set; }
+        public int PostId { get; set; }
         public bool IsActive { get; set; }
+
+        public int UserId { get; set; }
+        public User User { get; set; }
 
         public int TeamId { get; set; }
         public Team Team { get; set; }
 
-        public List<Rating> Ratings { get; set; }
+        public string PostContent { get; set; }
+        public DateTime PostTime { get; set; }
+
+        public List<Comment> Comments { get; set; }
+
+
     }
 }

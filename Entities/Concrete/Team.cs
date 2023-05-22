@@ -12,9 +12,10 @@ namespace Entities.Concrete
         [Key]
         public int TeamId { get; set; }
         public string TeamName { get; set; }
-        public bool TeamStatus { get; set; }
-        public DateTime TeamCreatedDate { get; set; }
-        public DateTime TeamModifiedDate { get; set; }
+        public bool IsActive { get; set; } 
 
+        public List<UserTeam> UserTeams { get; set; }
+        public List<Sprint> Sprints { get; set; }
+        public List<Post> Posts { get; set; }
     }
 }

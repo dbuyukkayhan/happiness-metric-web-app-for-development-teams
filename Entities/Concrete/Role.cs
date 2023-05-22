@@ -12,10 +12,10 @@ namespace Entities.Concrete
         [Key]
         public int RoleId { get; set; }
         public string RoleName { get; set; }
-        public string RoleDescription { get; set; }
-        public bool RoleStatus { get; set; }
-        public DateTime RoleCreatedDate { get; set; }
-        public DateTime RoleModifiedDate { get; set; }
+        public bool IsActive { get; set; }
+
+        List<RolePermission> RolePermissions { get; set; }
+        List<UserTeam> UserTeams { get; set; }
 
     }
 }

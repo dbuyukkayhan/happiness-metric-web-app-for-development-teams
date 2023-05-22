@@ -7,15 +7,13 @@ using System.Threading.Tasks;
 
 namespace Entities.Concrete
 {
-    public class Category
+    public class Permission
     {
         [Key]
-        public int CategoryId { get; set; }
-        public string CategoryName { get; set; }
+        public int PermissionId { get; set; }
+        public string PermissionName { get; set; }
         public bool IsActive { get; set; }
 
-        public List<Rating> Ratings { get; set; }
-
-
+        List<RolePermission> RolePermissions { get; set; }
     }
 }

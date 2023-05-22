@@ -15,9 +15,11 @@ namespace Entities.Concrete
         public string UserName { get; set; }
         public string UserPassword { get; set; }
         public string UserEmail { get; set; }
-        public bool UserStatus { get; set; }
-        public DateTime UserCreatedDate { get; set; }
-        public DateTime UserModifiedDate { get; set; }
+        public bool IsActive { get; set; }
 
+        public List<UserTeam> UserTeams { get; set; }
+        public List<Rating> Ratings { get; set; }
+        public List<Post> Posts { get; set; }
+        public List<Comment> Comments { get; set; }
     }
 }
