@@ -14,5 +14,7 @@ namespace BusinessLogic.Abstract
         void UpdateTeam(Team team);
         List<Team> GetList();
         Team GetById(int id);
+        Dictionary<Team, int> GetTeamsWithUserCount();
+        
     }
 }

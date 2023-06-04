@@ -1,0 +1,29 @@
+﻿@using Entities.Concrete
+@model List<Team>
+<div class="tech-btm">
+	<h3>Top Team</h3>
+	@foreach(var item in Model) {
+
+	<div class="blog-grids row mb-3">
+		<div class="col-md-5 blog-grid-left">
+			<a href="/Team/TeamDetails/@item.TeamId">
+				<img src="@item.TeamImage" class="card-img-top img-fluid" alt="">
+			</a>
+		</div>
+		<div class="col-md-7 blog-grid-right">
+			<h5 style="color: white">@item.TeamName</h5>
+			<br>
+			<h5>
+				<a href="single.html">@item.TeamDescription</a>
+			</h5>
+			<div class="sub-meta">
+				<span>
+						<i class="far fa-clock"></i> @item.TeamCreatedDate.ToString("dd MMMM yyyy")
+				</span>
+			</div>
+		</div>
+
+	</div>
+	}
+
+</div>

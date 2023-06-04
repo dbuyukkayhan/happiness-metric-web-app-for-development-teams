@@ -1,0 +1,26 @@
+﻿@model Entities.Concrete.Team
+@{
+    ViewData["Title"] = "AddTeam";
+    Layout = "~/Views/Shared/MemberLayout.cshtml";
+}
+
+<h1>Create Team</h1>
+<br />
+@using (Html.BeginForm("AddTeam", "Team", FormMethod.Post))
+{
+    @Html.Label("Team Name")
+    @Html.TextBoxFor(x => x.TeamName, new {@class="form-control"})
+    @Html.ValidationMessageFor(x => x.TeamName)
+    <br />
+    @Html.Label("Team Image")
+    @Html.TextBoxFor(x => x.TeamImage, new {@class="form-control"})
+    @Html.ValidationMessageFor(x => x.TeamImage)
+    <br />
+    @Html.Label("Team Description")
+    @Html.TextAreaFor(x => x.TeamDescription, 10, 3, new {@class="form-control"})
+    @Html.ValidationMessageFor(x => x.TeamDescription)
+    <br />
+    <button class="btn btn-primary">Create</button>
+
+}
+

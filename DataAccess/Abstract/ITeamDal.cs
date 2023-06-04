@@ -9,6 +9,7 @@ namespace DataAccess.Abstract
 {
     public interface ITeamDal : IGenericDal<Team>
     {
+        Dictionary<Team, int> GetTeamsWithUserCount();
         
     }
 }

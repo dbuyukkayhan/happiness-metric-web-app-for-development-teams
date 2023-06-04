@@ -1,8 +1,10 @@
 ﻿using DataAccess.Abstract;
 using DataAccess.Concrete;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -31,6 +33,19 @@ namespace DataAccess.Repositories
         {
             c.Add(t);
             c.SaveChanges();
+        }
+
+        public List<T> GetListAll(Expression<Func<T, bool>> filter)
+        {
+            return c.Set<T>().Where(filter).ToList();
+        }
+
+        public List<T> GetListAllWithIncludes(Expression<Func<T, bool>> filter, params Expression<Func<T, object>>[] includes)
+        {
+            var query = c.Set<T>().Where(filter);
+            foreach (var include in includes)
+                query = query.Include(include);
+            return query.ToList();
         }
 
         public void Update(T t)

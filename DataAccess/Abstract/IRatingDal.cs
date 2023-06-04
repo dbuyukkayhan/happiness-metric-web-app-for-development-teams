@@ -9,5 +9,6 @@ namespace DataAccess.Abstract
 {
     public interface IRatingDal : IGenericDal<Rating>
     {
+        double GetAverageRatingByTeam(int teamId);
     }
 }

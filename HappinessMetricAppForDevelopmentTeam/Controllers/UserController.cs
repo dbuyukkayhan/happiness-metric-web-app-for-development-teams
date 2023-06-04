@@ -6,11 +6,21 @@ namespace HappinessMetricAppForDevelopmentTeam.Controllers
 {
     public class UserController : Controller
     {
-        UserManager userManager = new UserManager(new EFUserRepository());
         public IActionResult Index()
         {
-            var values = userManager.GetList();
-            return View(values);
+           
+            return View();
+        }
+
+        public PartialViewResult MemberSideBarPartial()
+        {
+
+            return PartialView();
+        }
+
+        public PartialViewResult MemberFooterPartial()
+        {
+            return PartialView();
         }
     }
 }

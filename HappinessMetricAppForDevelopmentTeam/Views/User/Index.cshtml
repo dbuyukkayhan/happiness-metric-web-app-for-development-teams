@@ -1,26 +1,7 @@
-﻿@using Entities.Concrete
-@model List<User>
-
+﻿
 @{
-    Layout = null;
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/MemberLayout.cshtml";
 }
 
-
-<table>
-    <tr>
-        <th>User ID</th>
-        <th>User Name</th>
-        <th>UserPassword</th>
-        <th>User Email</th>
-        <th>Is Active</th>
-    </tr>
-    @foreach(var item in Model) {
-        <tr>
-            <td>@item.UserId</td>
-            <td>@item.UserName</td>
-            <td>@item.UserPassword</td>
-            <td>@item.UserEmail</td>
-            <td>@item.IsActive</td>
-        </tr>
-    }
-</table>
+<h1>test</h1>

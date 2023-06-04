@@ -1,0 +1,43 @@
+﻿@using Entities.Concrete
+@model Dictionary<Team, Role>
+@{
+    ViewData["Title"] = "TeamListByUser";
+    Layout = "~/Views/Shared/MemberLayout.cshtml";
+}
+
+
+<h1>Hello @User.FindFirst("UserName")?.Value, teams the you are a member of: </h1>
+<br />
+<table class="table table-bordered">
+    <tr>
+        <th>Team Image</th>
+        <th>Team Name</th>
+        <th>Your Role</th>
+        <th>Team Created Date</th>
+        <th>Team Desciption</th>
+        <th>Leave</th>
+    </tr>
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td><img src="@item.Key.TeamImage"></td>
+            <td><a href="~/Team/TeamDetails/@item.Key.TeamId">@item.Key.TeamName</a></td>
+            <td>@item.Value.RoleName</td>
+            <td>@item.Key.TeamCreatedDate.ToString("dd MMMM yyyy")</td>
+            <td>@item.Key.TeamDescription</td>
+            <td>
+                <form method="post" asp-controller="Team" asp-action="LeaveTeam">
+                    <input type="hidden" name="teamId" value="@item.Key.TeamId" />
+                    <input type="hidden" name="roleId" value="@item.Value.RoleId" />
+                    <button type="submit" class="btn btn-danger">Leave</button>
+                </form>
+            </td>
+        </tr>
+    }
+
+    
+</table>
+<br />
+<br />
+<a class="btn btn-inverse-success" href="/Team/AddTeam">Create a New Team</a>
+

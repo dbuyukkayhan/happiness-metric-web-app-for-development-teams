@@ -1,5 +1,6 @@
 ﻿using BusinessLogic.Abstract;
 using DataAccess.Abstract;
+using DataAccess.Concrete;
 using DataAccess.EntityFramework;
 using DataAccess.Repositories;
 using Entities.Concrete;
@@ -14,10 +15,11 @@ namespace BusinessLogic.Concrete
     public class UserManager : IUserService
     {
         IUserDal _userDal;
-
-        public UserManager(IUserDal userDal)
+        IRoleDal _roleDal;
+        public UserManager(IUserDal userDal, IRoleDal roleDal)
         {
             _userDal = userDal;
+            _roleDal = roleDal;
         }
 
         public void AddUser(User user)
@@ -43,6 +45,24 @@ namespace BusinessLogic.Concrete
         public void UpdateUser(User user)
         {
             _userDal.Update(user);
+        }
+
+        public Dictionary<Team, Role> GetUserTeamsWithRoles(int userId)
+        {
+            Context c = new Context();
+
+            var userTeams = c.UserTeams.Where(ut => ut.UserId == userId && ut.IsActive == true).ToList();
+
+            Dictionary<Team, Role> teamAndRoles = new Dictionary<Team, Role>();
+
+            foreach (var userTeam in userTeams)
+            {
+                var team = c.Teams.FirstOrDefault(t => t.TeamId == userTeam.TeamId);
+                var role = _roleDal.GetById(userTeam.RoleId);
+                teamAndRoles.Add(team, role);
+            }
+
+            return teamAndRoles;
         }
     }
 }
