@@ -29,7 +29,7 @@ namespace BusinessLogic.Concrete
         }
         public void AddPost(Post post)
 		{
-			throw new NotImplementedException();
+			_postDal.Insert(post);
 		}
 
 		public void DeletePost(Post post)

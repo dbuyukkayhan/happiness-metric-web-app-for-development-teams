@@ -1,5 +1,6 @@
 ﻿using BusinessLogic.Concrete;
 using DataAccess.EntityFramework;
+using Entities.Concrete;
 using Microsoft.AspNetCore.Mvc;
 
 namespace HappinessMetricAppForDevelopmentTeam.Controllers
@@ -12,8 +13,10 @@ namespace HappinessMetricAppForDevelopmentTeam.Controllers
 			return View();
 		}
 
-		public PartialViewResult PartialAddPost()
+		[HttpPost]
+		public PartialViewResult PartialAddPost(Post p)
 		{
+
 			return PartialView();
 		}
 		public PartialViewResult PostListByBlog(int id)

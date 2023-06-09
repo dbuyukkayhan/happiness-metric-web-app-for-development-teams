@@ -28,12 +28,13 @@ namespace HappinessMetricAppForDevelopmentTeam.Controllers
                 {
                     new Claim(ClaimTypes.Name, p.UserEmail),
                     new Claim(ClaimTypes.NameIdentifier, dataValue.UserId.ToString()), // Kullanıcının id'sini ekleyin.
-                    new Claim("UserName", dataValue.UserName)
+                    new Claim("UserName", dataValue.UserName),
+                    new Claim("UserId", dataValue.UserId.ToString())
                 };
                 var userIdentity = new ClaimsIdentity(claims, "a");
                 ClaimsPrincipal principal = new ClaimsPrincipal(userIdentity);
                 await HttpContext.SignInAsync(principal);
-                return RedirectToAction("Index", "User");
+                return RedirectToAction("Index", "Dashboard");
             }
             return View();
         }

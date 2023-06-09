@@ -9,7 +9,7 @@ namespace HappinessMetricAppForDevelopmentTeam.ViewComponents.Post
 		PostManager postManager = new PostManager(new EFPostRepository());
 		public IViewComponentResult Invoke(int id)
 		{
-            var values = postManager.GetPostsWithUser().Where(x => x.TeamId == id);
+			var values = postManager.GetPostsWithUser().Where(x => x.TeamId == id).OrderByDescending(s => s.PostTime);
             //var values = postManager.GetList(id);
 			return View(values);
 		}

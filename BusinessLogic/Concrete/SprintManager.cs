@@ -18,7 +18,7 @@ namespace BusinessLogic.Concrete
         }
         public void AddSprint(Sprint sprint)
         {
-            throw new NotImplementedException();
+            _sprintDal.Insert(sprint);
         }
 
         public void DeleteSprint(Sprint sprint)
@@ -45,5 +45,10 @@ namespace BusinessLogic.Concrete
         {
             return _sprintDal.GetActiveSprintByTeamId(teamId);
         }
+        public List<Sprint> GetSprintsByTeamId(int teamId)
+        {
+            return _sprintDal.GetSprintsByTeamId(teamId);
+        }
+
     }
 }

@@ -15,5 +15,6 @@ namespace BusinessLogic.Abstract
         List<Sprint> GetList();
         Sprint GetById(int id);
         Sprint GetActiveSprintByTeamId(int teamId);
+        List<Sprint> GetSprintsByTeamId(int teamId);
     }
 }

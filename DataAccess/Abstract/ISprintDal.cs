@@ -10,5 +10,6 @@ namespace DataAccess.Abstract
     public interface ISprintDal : IGenericDal<Sprint>
     {
         Sprint GetActiveSprintByTeamId(int teamId);
+        List<Sprint> GetSprintsByTeamId(int teamId);
     }
 }

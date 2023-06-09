@@ -5,13 +5,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DataAccess.Abstract
+namespace BusinessLogic.Abstract
 {
-    public interface IRatingDal : IGenericDal<Rating>
+    public interface IRatingService
     {
-        double GetAverageRatingByTeam(int teamId);
         bool HasUserRatedSprint(int userId, int sprintId);
-        int GetNumberOfUsersRated(int teamId, int sprintId);
+        void AddRating(Rating rating);
         Rating GetRatingByCategoryId(int categoryId);
         List<Rating> GetRatingsBySprintId(int sprintId);
     }

@@ -1,4 +1,5 @@
-﻿using BusinessLogic.Concrete;
+﻿using BusinessLogic.Abstract;
+using BusinessLogic.Concrete;
 using BusinessLogic.ValidationRules;
 using DataAccess.Abstract;
 using DataAccess.Concrete;
@@ -8,6 +9,7 @@ using FluentValidation.Results;
 using HappinessMetricAppForDevelopmentTeam.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using NuGet.Protocol;
 using System.Runtime.Intrinsics.X86;
 using System.Security.Claims;
@@ -21,8 +23,9 @@ namespace HappinessMetricAppForDevelopmentTeam.Controllers
         UserTeamManager userTeamManager = new UserTeamManager(new EFUserTeamRepository());
         SprintManager sprintManager = new SprintManager(new EFSprintRepository());
         PostManager postManager = new PostManager(new EFPostRepository());
+        RatingManager ratingManager = new RatingManager(new EFRatingRepository());
+        CategoryManager categoryManager = new CategoryManager(new EFCategoryRepository());
 
-        [AllowAnonymous]
         public IActionResult Index()
         {
             //var values = teamManager.GetList();
@@ -49,6 +52,22 @@ namespace HappinessMetricAppForDevelopmentTeam.Controllers
             ViewBag.UserCount = userCount;
             ViewBag.PostCount = postCount;
 
+            var categories = categoryManager.GetAllCategories();
+            ViewBag.Categories = categories;
+
+            Dictionary<int, Rating> ratings = new Dictionary<int, Rating>();
+
+            foreach (var category in categories)
+            {
+                var rating = ratingManager.GetRatingByCategoryId(category.CategoryId); // Bu metodu kendi veritabanı çağrınıza göre değiştirmelisiniz
+                if (rating != null)
+                {
+                    ratings.Add(category.CategoryId, rating);
+                }
+            }
+
+            ViewBag.Ratings = ratings;
+
             var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
             if (userTeamManager.IsUserMemberOfTeam(int.Parse(userId), id))
             {
@@ -57,7 +76,20 @@ namespace HappinessMetricAppForDevelopmentTeam.Controllers
 
                 var activeSprint = sprintManager.GetActiveSprintByTeamId(id);
                 ViewBag.ActiveSprint = activeSprint;
+                
+                if(activeSprint != null)
+                {
+                    ViewBag.NumberOfUsersRated = ratingManager.GetNumberOfUsersRated(id, activeSprint.SprintId);
+                    int userIdParsed = int.Parse(userId);
 
+                    var hasUserRatedThisSprint = ratingManager.HasUserRatedSprint(userIdParsed, activeSprint.SprintId);
+                    ViewBag.HasUserRatedThisSprint = hasUserRatedThisSprint;
+                } else
+                {
+                    ViewBag.NumberOfUsersRated = 0;
+                    ViewBag.HasUserRatedThisSprint = false;
+                }
+                
                 return View(values);
             }
             else
@@ -138,5 +170,73 @@ namespace HappinessMetricAppForDevelopmentTeam.Controllers
 
             return View();
         }
+
+        [HttpPost]
+        public IActionResult CreateSprint(Sprint p)
+        {
+            return View();
+        }
+
+
+        [HttpPost]
+        public IActionResult RateSprint(List<Rating> modelList, int teamId)
+        {
+            string userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            int userIdParsed = Int32.Parse(userId);
+
+            foreach (var model in modelList)
+            {
+                model.UserId = userIdParsed;
+                model.IsActive = true;
+                ratingManager.AddRating(model);
+            }
+
+            return RedirectToAction("TeamDetails", "Team", new { id = teamId });
+        }
+
+
+        public IActionResult Results(int id) // id is the TeamId
+        {
+            var sprints = sprintManager.GetSprintsByTeamId(id).OrderByDescending(s => s.SprintEnd);
+            var categories = categoryManager.GetAllCategories();
+
+            var model = new Dictionary<string, List<KeyValuePair<string, double>>>();
+
+            foreach (var sprint in sprints)
+            {
+                var sprintRatings = ratingManager.GetRatingsBySprintId(sprint.SprintId);
+
+                var categoryAverages = categories.Select(c =>
+                {
+                    var categoryRatings = sprintRatings.Where(r => r.CategoryId == c.CategoryId);
+                    double averageScore = 0;
+
+                    if (categoryRatings.Any())
+                    {
+                        averageScore = categoryRatings.Average(r => r.RatingScore);
+                    }
+
+                    return new KeyValuePair<string, double>(c.CategoryName, averageScore);
+                }).ToList();
+
+                model.Add(sprint.SprintName, categoryAverages);
+            }
+
+            return View(model); // pass the model to the view
+        }
+
+        [HttpPost]
+        public IActionResult AddPost(Post post, int teamId)
+        {
+            string userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            int userIdParsed = Int32.Parse(userId);
+            post.UserId = userIdParsed;
+            post.TeamId = teamId;
+            post.PostTime = DateTime.Now;
+
+            postManager.AddPost(post);
+            return RedirectToAction("TeamDetails", "Team", new { id = teamId });
+        }
+
     }
 }

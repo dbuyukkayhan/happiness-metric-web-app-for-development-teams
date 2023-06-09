@@ -1,0 +1,67 @@
+﻿@model Dictionary<string, List<KeyValuePair<string, double>>>
+@using System.Globalization
+@{
+    ViewData["Title"] = "Results";
+    Layout = "~/Views/Shared/UserLayout.cshtml";
+}
+
+<section class="main-content-w3layouts-agileits">
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <script type="text/javascript">
+        google.charts.load('current', { 'packages': ['bar'] });
+        google.charts.setOnLoadCallback(drawChart);
+
+        function drawChart() {
+            try {
+                var data = google.visualization.arrayToDataTable([
+                    ['Sprints', @Html.Raw(string.Join(", ", Model.First().Value.Select(c => $"'{c.Key}'")))],
+        @Html.Raw(string.Join(",\n", Model.Select(s => $"['{s.Key}', {string.Join(", ", s.Value.Select(c => c.Value.ToString(CultureInfo.InvariantCulture)))}]")))
+                        ]);
+                var options = {
+                    chart: {
+                        title: 'Team Performance',
+                        subtitle: 'Sprint Category Averages',
+                    }
+                };
+
+                var chart = new google.charts.Bar(document.getElementById('columnchart_material'));
+
+                chart.draw(data, google.charts.Bar.convertOptions(options));
+                console.log(data)
+            } catch (e) {
+                console.error(e); // Hatanın tam çıktısını konsola yazdırır
+            }
+        }
+    </script>
+    <div class="container">
+        <h3 class="tittle">Results</h3>
+        <div class="inner-sec">
+            <!--left-->
+            <div class="left-blog-info-w3layouts-agileits text-left">
+                <div class="row">
+                    @foreach (var sprint in Model)
+                    {
+                        <div class="col-lg-4 card" style="margin-bottom: 25px;">
+                            <div class="card-body">
+                                <h5 class="card-title">
+                                    <a href="#">@sprint.Key</a>
+                                </h5>
+                                @foreach (var category in sprint.Value)
+                                {
+                                    <ul class="blog-icons my-4">
+                                        <li>
+                                            <a href="#">
+                                                <i class="far fa-calendar-alt"></i> @category.Key: @category.Value.ToString(CultureInfo.InvariantCulture)
+                                            </a>
+                                        </li>
+                                    </ul>
+                                }
+                            </div>
+                        </div>
+                    }
+                </div>
+            </div>
+            <div id="columnchart_material" style="width: 100%; height: 500px;"></div>
+        </div>
+    </div>
+</section>

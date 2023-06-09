@@ -6,17 +6,22 @@
     @foreach (var item in Model)
     {
         <div class="media">
-
+            @{
+                string encodedPostContent = System.Net.WebUtility.HtmlEncode(item.PostContent);
+            }
             <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ1-MXYe3BoyMb64a--L9Eni2Lt57v86GiILQ&usqp=CAU" width="90px" height="90px" alt="" class="img-fluid" />
             <div class="media-body">
                 <h5 class="mt-0" style="margin-bottom: 1px;">@item.User.UserName</h5> <h10 style="font-size: 12px;">@item.PostTime</h10>
-                <p>
-                    @item.PostContent
-                </p>
+                <br>
+                <br>
+                <pre><h6 style="font-size: 14px; overflow: hidden">@Html.Raw(encodedPostContent)</h6></pre>
 
             </div>
 
         </div>
+        <hr />
+        <br />
+
     }
 
 </div>
